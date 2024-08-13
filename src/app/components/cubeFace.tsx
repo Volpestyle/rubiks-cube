@@ -1,12 +1,14 @@
 import { CUBE_COLORS, CubeState, FaceKey } from "./flattenedCube";
 
-const CubeFace = ({
-  cubeState,
-  faceKey,
-}: {
+interface CubeFaceProps {
   cubeState: CubeState;
   faceKey: FaceKey;
-}) => {
+}
+
+const CubeFace: React.FC<CubeFaceProps> = ({
+  cubeState,
+  faceKey,
+}: CubeFaceProps) => {
   return (
     <div
       className={`w-48 h-48 grid grid-cols-3 grid-rows-3 ${CUBE_COLORS[faceKey]}`}

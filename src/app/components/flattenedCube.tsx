@@ -10,7 +10,7 @@ export const CUBE_COLORS = {
   R: "bg-red-400", // Right
   B: "bg-blue-400", // Back
   D: "bg-gray-300", // Down
-} as const;
+};
 
 export type FaceKey = keyof typeof CUBE_COLORS;
 
@@ -60,39 +60,162 @@ const FlattenedCube: React.FC = () => {
 
   const rotateFace = useCallback(
     (face: FaceKey) => {
-      // Avoiding stale state
       setCubeState((prevState) => {
         const newState = JSON.parse(JSON.stringify(prevState)) as CubeState;
         const oldFace = prevState[face];
         let newFace;
 
         // Handle face rotation
-        if (isInverted) {
+        if (!isInverted) {
           newFace = oldFace[0].map((_, i) =>
-            oldFace.map((row) => row[CUBE_SIZE - 1 - i])
+            oldFace.map((row) => row[i]).reverse()
           );
         } else {
           newFace = oldFace[0].map((_, i) =>
-            oldFace.map((row) => row[i]).reverse()
+            oldFace.map((row) => row[CUBE_SIZE - 1 - i])
           );
         }
 
         newState[face] = newFace;
 
+        // Handle inverse edge rotations
+        const rotateEdge = (faceRotation: () => void) => {
+          if (!isInverted) {
+            faceRotation();
+          } else {
+            // Apply the rotation three times for an inverse rotation
+            faceRotation();
+            faceRotation();
+            faceRotation();
+          }
+        };
+
         // Handle edge rotations
-        // TODO: Handle inverse edge rotations
         if (face === "U") {
-          // todo
+          rotateEdge(() => {
+            // Saving the affected edges (top edge of faces) for readability
+            // Using spread operator (...) to avoid creating reference copy (good practice).
+            const tempF = newState.F[0].map((cell) => ({ ...cell }));
+            const tempR = newState.R[0].map((cell) => ({ ...cell }));
+            const tempB = newState.B[0].map((cell) => ({ ...cell }));
+            const tempL = newState.L[0].map((cell) => ({ ...cell }));
+
+            // Right edge becomes the previous Front edge
+            // Left becomes Front
+            // Back becomes Left
+            // Right becomes Back
+            for (let i = 0; i < CUBE_SIZE; i++) {
+              newState.F[0][i] = tempR[i];
+              newState.L[0][i] = tempF[i];
+              newState.B[0][i] = tempL[i];
+              newState.R[0][i] = tempB[i];
+            }
+          });
         } else if (face === "D") {
-          // todo
+          rotateEdge(() => {
+            // Bottom edge of faces
+            const tempF = newState.F[2].map((cell) => ({ ...cell }));
+            const tempR = newState.R[2].map((cell) => ({ ...cell }));
+            const tempB = newState.B[2].map((cell) => ({ ...cell }));
+            const tempL = newState.L[2].map((cell) => ({ ...cell }));
+
+            // Opposite of Up rotation
+            for (let i = 0; i < CUBE_SIZE; i++) {
+              newState.R[2][i] = tempF[i];
+              newState.F[2][i] = tempL[i];
+              newState.L[2][i] = tempB[i];
+              newState.B[2][i] = tempR[i];
+            }
+          });
         } else if (face === "L") {
-          // todo
+          rotateEdge(() => {
+            // Left edge of faces
+            const tempU = newState.U.map((row) => ({ ...row[0] }));
+            const tempF = newState.F.map((row) => ({ ...row[0] }));
+            const tempD = newState.D.map((row) => ({ ...row[0] }));
+            // Right edge of bottom face
+            const tempB = newState.B.map((row) => row[CUBE_SIZE - 1]);
+
+            // Front edge becomes the previous Up edge
+            // Down becomes Front
+            // Back becomes Down
+            // Up becomes Back
+            for (let i = 0; i < CUBE_SIZE; i++) {
+              newState.F[i][0] = tempU[i];
+              newState.D[i][0] = tempF[i];
+              newState.B[CUBE_SIZE - 1 - i][CUBE_SIZE - 1] = tempD[i];
+              newState.U[i][0] = tempB[CUBE_SIZE - 1 - i];
+            }
+          });
         } else if (face === "R") {
-          // todo
+          rotateEdge(() => {
+            // Right edge of faces
+            const tempU = newState.U.map((row) => ({ ...row[CUBE_SIZE - 1] }));
+            const tempD = newState.D.map((row) => ({ ...row[CUBE_SIZE - 1] }));
+            const tempF = newState.F.map((row) => ({ ...row[CUBE_SIZE - 1] }));
+            // Left edge of Back face
+            const tempB = newState.B.map((row) => ({ ...row[0] }));
+
+            // Front edge becomes the previous Down edge
+            // Down becomes Back
+            // Back becomes Up
+            // Up becomes Front
+            for (let i = 0; i < CUBE_SIZE; i++) {
+              newState.F[CUBE_SIZE - 1 - i][CUBE_SIZE - 1] =
+                tempD[CUBE_SIZE - 1 - i];
+              newState.D[CUBE_SIZE - 1 - i][CUBE_SIZE - 1] = tempB[i];
+              newState.B[CUBE_SIZE - 1 - i][0] = tempU[i];
+              newState.U[i][CUBE_SIZE - 1] = tempF[i];
+            }
+          });
         } else if (face === "F") {
-          // todo
+          rotateEdge(() => {
+            // Bottom edge of Up face
+            const tempU = newState.U[CUBE_SIZE - 1].map((cell) => ({
+              ...cell,
+            }));
+            // Left edge of Right face
+            const tempR = newState.R.map((row) => ({ ...row[0] }));
+            // Top edge of Down face
+            const tempD = newState.D[0].map((cell) => ({ ...cell }));
+            // Right edge of Left face
+            const tempL = newState.L.map((row) => ({ ...row[CUBE_SIZE - 1] }));
+
+            // Right becomes Up
+            // Down becomes Right
+            // Left becomes Down
+            // Up becomes Left
+            for (let i = 0; i < CUBE_SIZE; i++) {
+              newState.R[i][0] = tempU[i];
+              newState.D[0][CUBE_SIZE - 1 - i] = tempR[i];
+              newState.L[i][CUBE_SIZE - 1] = tempD[i];
+              newState.U[CUBE_SIZE - 1][CUBE_SIZE - i - 1] = tempL[i];
+            }
+          });
         } else if (face === "B") {
-          // todo
+          rotateEdge(() => {
+            // Top edge of Up face
+            const tempU = newState.U[0].map((cell) => ({ ...cell }));
+            // Left edge of Left face
+            const tempL = newState.L.map((row) => ({ ...row[0] }));
+            // Bottom edge of Down face
+            const tempD = newState.D[CUBE_SIZE - 1].map((cell) => ({
+              ...cell,
+            }));
+            // Right edge of Right face
+            const tempR = newState.R.map((row) => ({ ...row[CUBE_SIZE - 1] }));
+
+            // Left becomes Up
+            // Down becomes Left
+            // Right becomes Down
+            // Up becomes Right
+            for (let i = 0; i < CUBE_SIZE; i++) {
+              newState.L[i][0] = tempU[CUBE_SIZE - 1 - i];
+              newState.D[CUBE_SIZE - 1][i] = tempL[i];
+              newState.R[CUBE_SIZE - 1 - i][CUBE_SIZE - 1] = tempD[i];
+              newState.U[0][i] = tempR[i];
+            }
+          });
         }
         return newState;
       });
@@ -126,10 +249,10 @@ const FlattenedCube: React.FC = () => {
         ))}
         <button
           onClick={() => setIsInverted(!isInverted)}
-          className={`px-4 py-2 border text-green-600 ${
+          className={`px-4 py-2 text-white ${
             isInverted
-              ? "border-red-600 text-red-600 hover:bg-red-600 hover:text-white"
-              : "border-green-600 hover:bg-green-600 hover:text-white"
+              ? "bg-red-600 hover:opacity-80"
+              : "bg-green-600 hover:opacity-80"
           }`}
         >
           {isInverted ? "Inverted" : "Clockwise"}
