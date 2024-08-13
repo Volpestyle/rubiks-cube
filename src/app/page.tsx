@@ -1,3 +1,4 @@
+"use client";
 import FlattenedCube from "./components/flattenedCube";
 
 export default function Home() {

@@ -1,20 +1,28 @@
-import { CUBE_COLORS, CUBE_SIZE, FaceKey } from "./flattenedCube";
+import { CUBE_COLORS, CubeState, FaceKey } from "./flattenedCube";
 
-const CubeFace = ({ faceKey }: { faceKey: FaceKey }) => {
+const CubeFace = ({
+  cubeState,
+  faceKey,
+}: {
+  cubeState: CubeState;
+  faceKey: FaceKey;
+}) => {
   return (
-    <div className={`w-48 h-48 ${CUBE_COLORS[faceKey]}`}>
-      {[...Array(CUBE_SIZE)].map((_, i) => (
-        <div key={i} className="flex">
-          {[...Array(CUBE_SIZE)].map((_, j) => (
-            <div
-              key={j}
-              className="w-16 h-16 border border-black flex items-center justify-center text-sm font-semibold"
-            >
-              {`${faceKey}${i},${j}`}
-            </div>
-          ))}
-        </div>
-      ))}
+    <div
+      className={`w-48 h-48 grid grid-cols-3 grid-rows-3 ${CUBE_COLORS[faceKey]}`}
+    >
+      {cubeState[faceKey].map((row, i) =>
+        row.map((cell, j) => (
+          <div
+            key={`${i}-${j}`}
+            className={`w-16 h-16 border border-black flex items-center justify-center text-sm font-semibold ${
+              CUBE_COLORS[cell.color]
+            }`}
+          >
+            {cell.originalCoord}
+          </div>
+        ))
+      )}
     </div>
   );
 };
