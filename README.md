@@ -1,6 +1,6 @@
 # Rubiks Cube State Management
 
-Simple rubiks cube state management in a Typescript app.
+A Next.js Typescript & Tailwind CSS app to manage the state of a Rubiks cube in a 2D representation.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
