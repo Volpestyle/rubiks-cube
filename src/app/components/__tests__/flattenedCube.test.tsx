@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import FlattenedCube, { CUBE_SIZE, FaceKey } from "../flattenedCube";
+global.structuredClone = (val) => JSON.parse(JSON.stringify(val));
 
 describe("FlattenedCube", () => {
   // Get the state of a face by iterating through all its cells and saving their textContent (coordinates/identifiers) in a new matrix

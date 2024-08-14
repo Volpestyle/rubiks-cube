@@ -22,6 +22,7 @@ const CubeFace: React.FC<CubeFaceProps> = ({
               CUBE_COLORS[cell.color]
             }`}
           >
+            {cell.color}
             {cell.originalCoord}
           </div>
         ))
