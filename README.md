@@ -57,3 +57,11 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Build static files and deploy to Github pages
+
+```bash
+npm run build
+# followed by
+npm run deploy
+```
