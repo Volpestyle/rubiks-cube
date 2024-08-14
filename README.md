@@ -4,7 +4,7 @@ A [Next.js](https://nextjs.org/) Typescript & Tailwind CSS app to manage the sta
 
 ## Overview
 
-In this a dynamic representation of a flattened Rubik's cube, each square/cell is labeled with either U (up), L (left), F (front), R (right), B (back), or D (Down), as well as the coordinates relative to the face it's on. These coordinates do not change as the squares move around the cube, since this is helpful during debugging to keep track of how each square is being rotated.
+This is a dynamic representation of a flattened Rubik's cube, where each square/cell is labeled with either U (up), L (left), F (front), R (right), B (back), or D (Down), as well as the coordinates relative to the face it's on. These coordinates do not change as the squares move around the cube, since this is helpful during debugging to keep track of how each square is being rotated.
 
 ## Testing
 
