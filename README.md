@@ -2,7 +2,7 @@
 
 Live at: https://volpestyle.github.io/rubiks-cube/
 
-A [Next.js](https://nextjs.org/) Typescript & Tailwind CSS app to manage the state of a Rubik's cube in a 2D representation.
+A React Typescript & TailwindCSS app to manage the state of a Rubik's cube in a 2D representation.
 
 ## Overview
 
@@ -39,6 +39,8 @@ I used Jest for testing. Test coverage includes checking that for every face rot
 The tests are found under `components/__tests__`.
 
 ## Running development server
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ```bash
 npm run dev
