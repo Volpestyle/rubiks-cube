@@ -1,5 +1,7 @@
 # Rubiks Cube State Management
 
+Live at: https://volpestyle.github.io/rubiks-cube/
+
 A [Next.js](https://nextjs.org/) Typescript & Tailwind CSS app to manage the state of a Rubik's cube in a 2D representation.
 
 ## Overview
