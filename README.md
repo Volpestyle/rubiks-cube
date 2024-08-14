@@ -38,6 +38,10 @@ npm run test
 I used Jest for testing. Test coverage includes checking that for every face rotation the affected cells of the cube have moved to the correct location. There is also a test for an inverted rotation of the U face.
 The tests are found under `components/__tests__`.
 
+#### Manual testing
+
+Can be proofed using https://rubikscu.be/#simulator
+
 ## Running development server
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).

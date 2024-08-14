@@ -144,7 +144,7 @@ const FlattenedCube: React.FC = () => {
             // Left edge of Back face
             const tempB = newState.B.map((row) => ({ ...row[0] }));
 
-            // Rotate edges
+            // Rotate edges, reversing order where needed
             for (let i = 0; i < CUBE_SIZE; i++) {
               newState.F[CUBE_SIZE - 1 - i][CUBE_SIZE - 1] =
                 tempD[CUBE_SIZE - 1 - i];
