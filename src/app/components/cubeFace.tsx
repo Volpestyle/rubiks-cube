@@ -17,6 +17,7 @@ const CubeFace: React.FC<CubeFaceProps> = ({
         row.map((cell, j) => (
           <div
             key={`${i}-${j}`}
+            data-testid={`cell-${faceKey}`}
             className={`w-16 h-16 border border-black flex items-center justify-center text-sm font-semibold ${
               CUBE_COLORS[cell.color]
             }`}
