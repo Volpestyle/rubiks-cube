@@ -27,7 +27,7 @@ Each object in the array represents a square and each key a face of the cube.
 
 #### Rotation Logic
 
-The majority of rotation logic is handled in one big `if else` statement (if face is 'U', handle accordingly) since each face rotation requires unique transformations to the cubeState data structure. This logic could definitely be refactored to be less redudant and more modular.
+The majority of rotation logic is handled in one big `if else` statement (if face is 'U', handle accordingly) since each face rotation requires unique transformations to the cubeState data structure. This logic could definitely be refactored to be less redudant and more modular, similar to how I structured the tests.
 
 ## Testing
 
