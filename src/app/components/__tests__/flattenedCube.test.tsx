@@ -215,4 +215,44 @@ describe("FlattenedCube", () => {
       });
     });
   });
+
+  it("rotates the U face counter-clockwise when inverted", () => {
+    render(<FlattenedCube />);
+
+    const initialState = getAllFaces();
+
+    // Click the invert button
+    fireEvent.click(screen.getByText("Clockwise"));
+
+    // Now rotate the U face
+    fireEvent.click(screen.getByText("Rotate U"));
+
+    const rotatedState = getAllFaces();
+
+    // Check that the U face has rotated counter-clockwise
+    const rotatedFace = rotatedState.U;
+    const initialFace = initialState.U;
+    expect(rotatedFace[0][0]).toBe(initialFace[0][2]);
+    expect(rotatedFace[0][1]).toBe(initialFace[1][2]);
+    expect(rotatedFace[0][2]).toBe(initialFace[2][2]);
+    expect(rotatedFace[1][0]).toBe(initialFace[0][1]);
+    expect(rotatedFace[1][2]).toBe(initialFace[2][1]);
+    expect(rotatedFace[2][0]).toBe(initialFace[0][0]);
+    expect(rotatedFace[2][1]).toBe(initialFace[1][0]);
+    expect(rotatedFace[2][2]).toBe(initialFace[2][0]);
+
+    // Check that the edges of adjacent faces have moved correctly
+    const expectations = [
+      { from: { face: "B", edge: "top" }, to: { face: "L", edge: "top" } },
+      { from: { face: "L", edge: "top" }, to: { face: "F", edge: "top" } },
+      { from: { face: "F", edge: "top" }, to: { face: "R", edge: "top" } },
+      { from: { face: "R", edge: "top" }, to: { face: "B", edge: "top" } },
+    ];
+
+    expectations.forEach(({ from, to }) => {
+      const fromEdge = getEdge(initialState[from.face as FaceKey], from.edge);
+      const toEdge = getEdge(rotatedState[to.face as FaceKey], to.edge);
+      expect(toEdge).toEqual(fromEdge);
+    });
+  });
 });

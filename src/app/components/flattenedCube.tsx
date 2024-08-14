@@ -93,8 +93,8 @@ const FlattenedCube: React.FC = () => {
         // Handle edge rotations
         if (face === "U") {
           rotateEdge(() => {
-            // Saving the affected edges (top edge of faces) for readability
-            // Using spread operator (...) to avoid creating reference copy (good practice).
+            // Saving the affected edges as temp var for readability
+            // Using spread operator (...) to avoid creating reference copy
             const tempF = newState.F[0].map((cell) => ({ ...cell }));
             const tempR = newState.R[0].map((cell) => ({ ...cell }));
             const tempB = newState.B[0].map((cell) => ({ ...cell }));
@@ -113,13 +113,13 @@ const FlattenedCube: React.FC = () => {
           });
         } else if (face === "D") {
           rotateEdge(() => {
-            // Bottom edge of faces
+            // Bottom edge of affected faces
             const tempF = newState.F[2].map((cell) => ({ ...cell }));
             const tempR = newState.R[2].map((cell) => ({ ...cell }));
             const tempB = newState.B[2].map((cell) => ({ ...cell }));
             const tempL = newState.L[2].map((cell) => ({ ...cell }));
 
-            // Opposite of Up rotation
+            // Inverse of 'Up' rotation
             for (let i = 0; i < CUBE_SIZE; i++) {
               newState.R[2][i] = tempF[i];
               newState.F[2][i] = tempL[i];
@@ -129,7 +129,7 @@ const FlattenedCube: React.FC = () => {
           });
         } else if (face === "L") {
           rotateEdge(() => {
-            // Left edge of faces
+            // Left edge of affected faces
             const tempU = newState.U.map((row) => ({ ...row[0] }));
             const tempF = newState.F.map((row) => ({ ...row[0] }));
             const tempD = newState.D.map((row) => ({ ...row[0] }));
@@ -149,7 +149,7 @@ const FlattenedCube: React.FC = () => {
           });
         } else if (face === "R") {
           rotateEdge(() => {
-            // Right edge of faces
+            // Right edge of affected faces
             const tempU = newState.U.map((row) => ({ ...row[CUBE_SIZE - 1] }));
             const tempD = newState.D.map((row) => ({ ...row[CUBE_SIZE - 1] }));
             const tempF = newState.F.map((row) => ({ ...row[CUBE_SIZE - 1] }));
@@ -181,7 +181,7 @@ const FlattenedCube: React.FC = () => {
             // Right edge of Left face
             const tempL = newState.L.map((row) => ({ ...row[CUBE_SIZE - 1] }));
 
-            // Right becomes Up
+            // Right edge becomes previous Up edge
             // Down becomes Right
             // Left becomes Down
             // Up becomes Left
@@ -205,7 +205,7 @@ const FlattenedCube: React.FC = () => {
             // Right edge of Right face
             const tempR = newState.R.map((row) => ({ ...row[CUBE_SIZE - 1] }));
 
-            // Left becomes Up
+            // Left edge becomes previous Up edge
             // Down becomes Left
             // Right becomes Down
             // Up becomes Right
